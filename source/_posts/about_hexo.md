@@ -74,6 +74,10 @@ categories:
 ```
 &emsp;&emsp;其中tags的设置是相互独立的，而categories的设置是有层级的，由上到下依次细化，而一篇博文同时也可以归属于多个分类，此时通过上面展示的中括号将分类层级以此键入。
 
+### Git相关
+&emsp;&emsp;最基本的是撰写博客之后的提交，hexo“三部曲” `hexo clean`(这个有时候可以不要)，`hexo g`(generate) `hexo d`(deploy).
+&emsp;&emsp;此时同步源码则是在根目录下git push
+
 ### TODO LIST
 *关于前端或者blog相关*
 - 继续学习和深入了解next相关
