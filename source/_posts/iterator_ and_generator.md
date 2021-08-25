@@ -1,7 +1,7 @@
 ---
-layout:
+layout: 
 title: 迭代器与生成器 Iterator andgenerator
-date:2021-08-25
+date: 2021-08-25
 tags:
 - python
 - dataloader
