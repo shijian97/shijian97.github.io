@@ -59,6 +59,7 @@ timezone: ''
 
 ### 3 撰写博文
 &emsp;&emsp;博客撰写使用的是Markdown，编辑器为Typora，最后存放位置为`\source\_post`。Markdown的语法也较为简单，可以掌握简单的分级标题、列表以及代码样式即可。Markdown的语法查询也有对应的 [链接](https://markdown.com.cn/basic-syntax/).
+&emsp;&emsp;新建博文使用语法`hexo new [layout] title`. 
 &emsp;&emsp;对于博文来讲，可以设置tags和categories用来区分和查找，一般是在博文的头部插入layout，例如本篇博文
 ```
 ---

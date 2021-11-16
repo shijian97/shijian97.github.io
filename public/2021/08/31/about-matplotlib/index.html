@@ -20,22 +20,21 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"always","padding":18,"offset":12,"onmobile":false,"dimmer":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="关于iterator和generator的区别于联系。">
+  <meta name="description" content="学习matplotlib的应用">
 <meta property="og:type" content="article">
-<meta property="og:title" content="迭代器与生成器 Iterator andgenerator">
-<meta property="og:url" content="http://example.com/2021/08/25/iterator_%20and_generator/index.html">
+<meta property="og:title" content="matplotlib基础">
+<meta property="og:url" content="http://example.com/2021/08/31/about-matplotlib/index.html">
 <meta property="og:site_name" content="wanderland">
-<meta property="og:description" content="关于iterator和generator的区别于联系。">
+<meta property="og:description" content="学习matplotlib的应用">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2021-08-24T16:00:00.000Z">
-<meta property="article:modified_time" content="2021-08-25T14:08:15.604Z">
+<meta property="article:published_time" content="2021-08-31T13:40:52.000Z">
+<meta property="article:modified_time" content="2021-09-04T14:55:53.460Z">
 <meta property="article:author" content="Shi">
 <meta property="article:tag" content="python">
-<meta property="article:tag" content="dataloader">
-<meta property="article:tag" content="pytorch">
+<meta property="article:tag" content="matplotlib">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="http://example.com/2021/08/25/iterator_%20and_generator/">
+<link rel="canonical" href="http://example.com/2021/08/31/about-matplotlib/">
 
 
 <script id="page-configurations">
@@ -48,7 +47,7 @@
   };
 </script>
 
-  <title>迭代器与生成器 Iterator andgenerator | wanderland</title>
+  <title>matplotlib基础 | wanderland</title>
   
 
 
@@ -163,7 +162,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/08/25/iterator_%20and_generator/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/08/31/about-matplotlib/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/jiraiya.jpg">
@@ -176,7 +175,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          迭代器与生成器 Iterator andgenerator
+          matplotlib基础
         </h1>
 
         <div class="post-meta">
@@ -185,10 +184,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2021-08-25 00:00:00 / 修改时间：22:08:15" itemprop="dateCreated datePublished" datetime="2021-08-25T00:00:00+08:00">2021-08-25</time>
+              <time title="创建时间：2021-08-31 21:40:52" itemprop="dateCreated datePublished" datetime="2021-08-31T21:40:52+08:00">2021-08-31</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-09-04 22:55:53" itemprop="dateModified" datetime="2021-09-04T22:55:53+08:00">2021-09-04</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -214,33 +219,91 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>关于iterator和generator的区别于联系。</p>
+        <p>学习matplotlib的应用</p>
 <span id="more"></span>
-<h3 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h3><p>简单来说生成器是一种特殊的迭代器，而可迭代对象有下面三种：</p>
-<ul>
-<li>迭代器 –&gt; 生成器</li>
-<li>序列（字符串、列表、元组）</li>
-<li>字典</li>
+
+<h3 id="简单matplotlibAPI"><a href="#简单matplotlibAPI" class="headerlink" title="简单matplotlibAPI"></a>简单matplotlibAPI</h3><p>导入<br><code>In [0]: import matplotlib.pyplot as plt</code><br>简单的使用</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">In [1]: import numpy as np</span><br><span class="line">In [2]: data = np.arange(10)</span><br><span class="line">In [3]: plt.plot(data)</span><br></pre></td></tr></table></figure>
+
+<h4 id="图片与子图"><a href="#图片与子图" class="headerlink" title="图片与子图"></a>图片与子图</h4><p>matplotlib绘制的图片位于Figure对象中，使用plt.figure生成一个新图片。<br>使用subplot生成2X2的子图并布置在左上角的位置</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">In [4]: fig = plt.figure()</span><br><span class="line">In [5]: ax1 = fig.add_subplot(2,2,1)</span><br></pre></td></tr></table></figure>
+
+<h4 id="画图"><a href="#画图" class="headerlink" title="画图"></a>画图</h4><ul>
+<li><p>matplotlib主函数接收带有x和y轴的数组以及参数。<br><code>ax.plot(x,y,linestyle=&#39;--&#39;,color=&#39;g&#39;)</code>或者<code>ax.plot(x,y,&#39;g--&#39;)</code></p>
+</li>
+<li><p>设置刻度标签和图例</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">ticks = ax.set_xticks([0,250,500,750,1000])</span><br><span class="line">labels = ax.set_xticklabels([&#x27;one&#x27;,&#x27;two&#x27;,&#x27;three&#x27;,&#x27;four&#x27;,&#x27;five&#x27;])</span><br><span class="line">ax.set_title(&#x27;My PLT&#x27;)</span><br><span class="line">ax.set_xlabel(&#x27;Stage&#x27;)</span><br></pre></td></tr></table></figure></li>
 </ul>
-<h3 id="1-生成器"><a href="#1-生成器" class="headerlink" title="1 生成器"></a>1 生成器</h3><p>&emsp;&emsp;通过列表生成式，我们可以直接创建一个列表，但是，受到内存限制，列表容量肯定是有限的，而且创建一个包含100万个元素的列表，不仅占用很大的存储空间，如果我们仅仅需要访问前面几个元素，那后面绝大多数元素占用的空间都白白浪费了。</p>
-<p>&emsp;&emsp;所以，如果列表元素可以按照某种算法推算出来，那我们是否可以在循环的过程中不断推算出后续的元素呢？这样就不必创建完整的list，从而节省大量的空间，在Python中，这种一边循环一边计算的机制，称为生成器：generator.</p>
-<p>&emsp;&emsp;生成器是一个特殊的程序，可以被用作控制循环的迭代行为，python中生成器是迭代器的一种，使用yield返回值函数，每次调用<strong>yield</strong>会暂停，而可以使用 <code>next()</code> 函数和 <code>send()</code> 函数恢复生成器。</p>
-<p>&emsp;&emsp;生成器类似于返回值为数组的一个函数，这个函数可以接受参数，可以被调用，但是，不同于一般的函数会一次性返回包括了所有数值的数组，生成器一次只能产生一个值，这样消耗的内存数量将大大减小，而且允许调用函数可以很快的处理前几个返回值，因此生成器看起来像是一个函数，但是表现得却像是迭代器。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">#列表生成式</span><br><span class="line">lis = [x*x for x in range(10)]</span><br><span class="line">print(lis)</span><br><span class="line">#生成器</span><br><span class="line">generator_ex = (x*x for x in range(10))</span><br><span class="line">print(generator_ex)</span><br><span class="line"> </span><br><span class="line">结果：</span><br><span class="line">[0, 1, 4, 9, 16, 25, 36, 49, 64, 81]</span><br><span class="line">&lt;generator object &lt;genexpr&gt; at 0x000002A4CBF9EBA0&gt;</span><br></pre></td></tr></table></figure>
-
-<p>&emsp;&emsp;那么创建list和generator_ex，的区别是什么呢？从表面看就是[  ]和（）,但是结果却不一样，一个打印出来是列表（因为是列表生成式），而第二个打印出来却是<code>&lt;generator object &lt;genexpr&gt; at 0x000002A4CBF9EBA0&gt;</code>，要一个个打印出来，可以通过next（）函数获得generator的下一个返回值。</p>
-<p>用generator实现斐波那契数列</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">def fib(max):</span><br><span class="line">    n,a,b =0,0,1</span><br><span class="line">    while n &lt; max:</span><br><span class="line">        yield b</span><br><span class="line">        a,b =b,a+b</span><br><span class="line">        n = n+1</span><br><span class="line">    return &#x27;done&#x27;</span><br><span class="line"> </span><br><span class="line">a = fib(10)</span><br><span class="line">print(fib(10))</span><br><span class="line"># out:&lt;generator object fib at 0x0000023A21A34FC0&gt;</span><br><span class="line"></span><br><span class="line">print(a.__next__())</span><br><span class="line"># out:1</span><br><span class="line">print(a.__next__())</span><br><span class="line"># out:1</span><br><span class="line">print(a.__next__())</span><br><span class="line"># out:2</span><br><span class="line"></span><br><span class="line">for i in fib(6):</span><br><span class="line">    print(i)</span><br><span class="line"># out:1;1;2;3;5;8</span><br></pre></td></tr></table></figure>
-
-<h3 id="2-迭代器"><a href="#2-迭代器" class="headerlink" title="2 迭代器"></a>2 迭代器</h3><ul>
-<li><strong>可迭代对象</strong>（Iterable）<br>集合数据类型，如list,tuple,dict,set,str等</li>
-<li><strong>迭代器</strong>（Iterator）<br>Python中一个实现了_iter_方法和_next_方法的类对象，就是迭代器。</li>
-</ul>
-<p>&emsp;&emsp;生成器都是Iterator对象，但list、dict、str虽然是Iterable（可迭代对象），却不是Iterator（迭代器）。把list、dict、str等Iterable变成Iterator可以使用iter()函数判断</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; from collections import Iterable</span><br><span class="line">&gt;&gt;&gt; isinstance([], Iterable)</span><br><span class="line">True</span><br><span class="line">&gt;&gt;&gt; isinstance(&#123;&#125;, Iterable)</span><br><span class="line">True</span><br><span class="line">&gt;&gt;&gt; isinstance(&#x27;abc&#x27;, Iterable)</span><br><span class="line">True</span><br><span class="line">&gt;&gt;&gt; isinstance((x for x in range(10)), Iterable)</span><br><span class="line">True</span><br><span class="line">&gt;&gt;&gt; isinstance(100, Iterable)</span><br><span class="line">False</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; from collections import Iterator</span><br><span class="line">&gt;&gt;&gt; isinstance((x for x in range(10)), Iterator)</span><br><span class="line">True</span><br><span class="line">&gt;&gt;&gt; isinstance([], Iterator)</span><br><span class="line">False</span><br><span class="line">&gt;&gt;&gt; isinstance(&#123;&#125;, Iterator)</span><br><span class="line">False</span><br><span class="line">&gt;&gt;&gt; isinstance(&#x27;abc&#x27;, Iterator)</span><br><span class="line">False</span><br></pre></td></tr></table></figure>
-
+<h3 id="使用pandas"><a href="#使用pandas" class="headerlink" title="使用pandas"></a>使用pandas</h3><p>Series和DataFrame都有一个plot属性，用于绘制图形，默认为折线图，有一些简单的方法参数。</p>
+<h4 id="Series-plot-方法参数"><a href="#Series-plot-方法参数" class="headerlink" title="Series.plot()方法参数"></a>Series.plot()方法参数</h4><table>
+<thead>
+<tr>
+<th align="left">参数</th>
+<th align="left">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">label</td>
+<td align="left">图里标签</td>
+</tr>
+<tr>
+<td align="left">ax</td>
+<td align="left">子图对象</td>
+</tr>
+<tr>
+<td align="left">style</td>
+<td align="left">样式</td>
+</tr>
+<tr>
+<td align="left">kind</td>
+<td align="left">area bar barh density hist kde line pie等</td>
+</tr>
+<tr>
+<td align="left">logy</td>
+<td align="left">y轴对数缩放</td>
+</tr>
+<tr>
+<td align="left">xticks</td>
+<td align="left">x的刻度值</td>
+</tr>
+<tr>
+<td align="left">yticks</td>
+<td align="left">y的刻度值</td>
+</tr>
+<tr>
+<td align="left">xlim</td>
+<td align="left">x轴范围</td>
+</tr>
+<tr>
+<td align="left">ylim</td>
+<td align="left">y轴范围</td>
+</tr>
+</tbody></table>
+<h4 id="DataFrame-plot-参数"><a href="#DataFrame-plot-参数" class="headerlink" title="DataFrame.plot()参数"></a>DataFrame.plot()参数</h4><table>
+<thead>
+<tr>
+<th align="left">参数</th>
+<th align="left">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">subplots</td>
+<td align="left">将df每一列绘制在独立子图中</td>
+</tr>
+<tr>
+<td align="left">sharex</td>
+<td align="left">subplots=True共享x轴</td>
+</tr>
+<tr>
+<td align="left">sharey</td>
+<td align="left">subplots=True共享y轴</td>
+</tr>
+<tr>
+<td align="left">title</td>
+<td align="left">标题</td>
+</tr>
+</tbody></table>
+<h4 id="柱状图"><a href="#柱状图" class="headerlink" title="柱状图"></a>柱状图</h4><p>plot.bar()和plot.barh()分别绘制垂直和水平的柱状图</p>
 
     </div>
 
@@ -251,8 +314,7 @@
       <footer class="post-footer">
           <div class="post-tags">
               <a href="/tags/python/" rel="tag"># python</a>
-              <a href="/tags/dataloader/" rel="tag"># dataloader</a>
-              <a href="/tags/pytorch/" rel="tag"># pytorch</a>
+              <a href="/tags/matplotlib/" rel="tag"># matplotlib</a>
           </div>
 
         
@@ -261,10 +323,13 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2021/08/25/make_torchdataloader_with_tfrecs_/" rel="prev" title="使用tfrecords制作pytorch的dataloader 双框架混用">
-      <i class="fa fa-chevron-left"></i> 使用tfrecords制作pytorch的dataloader 双框架混用
+    <a href="/2021/08/31/about-list-tuple-array/" rel="prev" title="数组杂谈">
+      <i class="fa fa-chevron-left"></i> 数组杂谈
     </a></div>
-      <div class="post-nav-item"></div>
+      <div class="post-nav-item">
+    <a href="/2021/08/31/about-python/" rel="next" title="python随笔">
+      python随笔 <i class="fa fa-chevron-right"></i>
+    </a></div>
     </div>
       </footer>
     
@@ -323,7 +388,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BC%95%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">引言</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E7%94%9F%E6%88%90%E5%99%A8"><span class="nav-number">2.</span> <span class="nav-text">1 生成器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E8%BF%AD%E4%BB%A3%E5%99%A8"><span class="nav-number">3.</span> <span class="nav-text">2 迭代器</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AE%80%E5%8D%95matplotlibAPI"><span class="nav-number">1.</span> <span class="nav-text">简单matplotlibAPI</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9B%BE%E7%89%87%E4%B8%8E%E5%AD%90%E5%9B%BE"><span class="nav-number">1.1.</span> <span class="nav-text">图片与子图</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%94%BB%E5%9B%BE"><span class="nav-number">1.2.</span> <span class="nav-text">画图</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8pandas"><span class="nav-number">2.</span> <span class="nav-text">使用pandas</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Series-plot-%E6%96%B9%E6%B3%95%E5%8F%82%E6%95%B0"><span class="nav-number">2.1.</span> <span class="nav-text">Series.plot()方法参数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#DataFrame-plot-%E5%8F%82%E6%95%B0"><span class="nav-number">2.2.</span> <span class="nav-text">DataFrame.plot()参数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9F%B1%E7%8A%B6%E5%9B%BE"><span class="nav-number">2.3.</span> <span class="nav-text">柱状图</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -339,20 +404,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">5</span>
+          <span class="site-state-item-count">12</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-count">4</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-count">18</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
