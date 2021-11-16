@@ -4,7 +4,7 @@ title: about-thinking-21.9.7
 date: 2021-09-07 23:16:10
 tags: 
 categories:
--[生活, 感悟]
+- [生活, 感悟]
 ---
 
 

@@ -61,6 +61,7 @@ timezone: ''
 &emsp;&emsp;博客撰写使用的是Markdown，编辑器为Typora，最后存放位置为`\source\_post`。Markdown的语法也较为简单，可以掌握简单的分级标题、列表以及代码样式即可。Markdown的语法查询也有对应的 [链接](https://markdown.com.cn/basic-syntax/).
 &emsp;&emsp;新建博文使用语法`hexo new [layout] title`. 
 &emsp;&emsp;对于博文来讲，可以设置tags和categories用来区分和查找，一般是在博文的头部插入layout，例如本篇博文
+
 ```
 ---
 layout: 
@@ -74,6 +75,8 @@ categories:
 ---
 ```
 &emsp;&emsp;其中tags的设置是相互独立的，而categories的设置是有层级的，由上到下依次细化，而一篇博文同时也可以归属于多个分类，此时通过上面展示的中括号将分类层级以此键入。
+
+&emsp;&emsp;![](itachi.jpg)
 
 ### Git相关
 &emsp;&emsp;最基本的是撰写博客之后的提交，hexo“三部曲” `hexo clean`(这个有时候可以不要)，`hexo g`(generate) `hexo d`(deploy).
