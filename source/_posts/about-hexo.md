@@ -9,6 +9,8 @@ categories:
 - [学习, coding]
 ---
 
+&emsp;&emsp;![](itachi.jpg)
+
 记录学习Hexo和Next搭建个人博客中的一些问题
 <!-- more -->
 > <center> 要提倡谦虚、学习和坚忍的精神。 —— 毛主席</center>
@@ -75,8 +77,6 @@ categories:
 ---
 ```
 &emsp;&emsp;其中tags的设置是相互独立的，而categories的设置是有层级的，由上到下依次细化，而一篇博文同时也可以归属于多个分类，此时通过上面展示的中括号将分类层级以此键入。
-
-&emsp;&emsp;![](itachi.jpg)
 
 ### Git相关
 &emsp;&emsp;最基本的是撰写博客之后的提交，hexo“三部曲” `hexo clean`(这个有时候可以不要)，`hexo g`(generate) `hexo d`(deploy).
