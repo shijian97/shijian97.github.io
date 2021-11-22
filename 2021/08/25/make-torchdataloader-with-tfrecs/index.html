@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-taiji.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-taiji.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"always","padding":18,"offset":12,"onmobile":false,"dimmer":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="在kaggle比赛的时候，有时候会需要读取tfrecords文件，而我使用的是torch的框架，此时需要通过tfrecords制作dataset和dataloader。解决这个问题第一是用了tfrecord库，第二是通过kaggle的一篇discussion学习到重写dataloader的方法。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="使用tfrecords制作pytorch的dataloader 双框架混用">
+<meta property="og:url" content="http://example.com/2021/08/25/make-torchdataloader-with-tfrecs/index.html">
+<meta property="og:site_name" content="wanderland">
+<meta property="og:description" content="在kaggle比赛的时候，有时候会需要读取tfrecords文件，而我使用的是torch的框架，此时需要通过tfrecords制作dataset和dataloader。解决这个问题第一是用了tfrecord库，第二是通过kaggle的一篇discussion学习到重写dataloader的方法。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-08-24T16:00:00.000Z">
+<meta property="article:modified_time" content="2021-11-22T05:05:14.655Z">
+<meta property="article:author" content="Shi">
+<meta property="article:tag" content="pytorch">
+<meta property="article:tag" content="tensorflow">
+<meta property="article:tag" content="tfrecords">
+<meta property="article:tag" content="dataloader">
+<meta property="article:tag" content="iterator">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://example.com/2021/08/25/make-torchdataloader-with-tfrecs/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>使用tfrecords制作pytorch的dataloader 双框架混用 | wanderland</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">wanderland</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/08/25/make-torchdataloader-with-tfrecs/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/jiraiya.jpg">
+      <meta itemprop="name" content="Shi">
+      <meta itemprop="description" content="谦虚 学习 坚忍">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="wanderland">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          使用tfrecords制作pytorch的dataloader 双框架混用
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-08-25 00:00:00" itemprop="dateCreated datePublished" datetime="2021-08-25T00:00:00+08:00">2021-08-25</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-11-22 13:05:14" itemprop="dateModified" datetime="2021-11-22T13:05:14+08:00">2021-11-22</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">学习</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%AD%A6%E4%B9%A0/coding/" itemprop="url" rel="index"><span itemprop="name">coding</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>在kaggle比赛的时候，有时候会需要读取tfrecords文件，而我使用的是torch的框架，此时需要通过tfrecords制作dataset和dataloader。解决这个问题第一是用了tfrecord库，第二是通过kaggle的一篇discussion学习到重写dataloader的方法。</p>
+<span id="more"></span>
+
+<h3 id="1-tfrecords文件读取"><a href="#1-tfrecords文件读取" class="headerlink" title="1 tfrecords文件读取"></a>1 tfrecords文件读取</h3><h4 id="1-1-tfrecords文件的结构"><a href="#1-1-tfrecords文件的结构" class="headerlink" title="1.1 tfrecords文件的结构"></a>1.1 tfrecords文件的结构</h4><p>TFRecords是一种tensorflow的内定标准文件格式，其实质是二进制文件，遵循protocol buffer协议（谷歌的一种数据交换格式），是Google专门为TensorFlow设计的一种数据格式。<br>tfrecord内部包含了多个 <code>tf.train.Example</code>， 而 <code>Example</code> 是protocol buffer(protobuf) 数据标准的实现，在一个 <code>Example</code> 消息体中包含了一系列的 <code>tf.train.feature</code> 属性，而 每一个 <code>feature</code> 是一个 <code>key-value</code> 的键值对，其中，key 是string类型，而value 的取值有三种：<br>-<code> bytes_list</code>: 可以存储string 和byte两种数据类型。<br>-<code> float_list</code>: 可以存储float(float32)与double(float64) 两种数据类型 。</p>
+<ul>
+<li><code>int64_list</code>: 可以存储：bool, enum, int32, uint32, int64, uint64 。</li>
+</ul>
+<h4 id="1-2-数据写入"><a href="#1-2-数据写入" class="headerlink" title="1.2 数据写入"></a>1.2 数据写入</h4><p>此部分简单 实例，通过代码了解即可</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">writer = tf.python_io.TFRecordWriter(out_file_name)  # 1. 定义 writer对象</span><br><span class="line"></span><br><span class="line">for data in dataes:</span><br><span class="line">    context = dataes[0]</span><br><span class="line">    question = dataes[1]</span><br><span class="line">    answer = dataes[2]</span><br><span class="line"></span><br><span class="line">    &quot;&quot;&quot; 2. 定义features &quot;&quot;&quot;</span><br><span class="line">   example = tf.train.Example (</span><br><span class="line">    features=tf.train.Features(</span><br><span class="line">        feature=&#123;</span><br><span class="line">            &#x27;name&#x27; : tf.train.Feature(bytes_list=tf.train.BytesList (value=[splits[-1].encode(&#x27;utf-8&#x27;)])),</span><br><span class="line">            &#x27;label&#x27;: tf.train.Feature(int64_list=tf.train.Int64List (value=[int(label)])),</span><br><span class="line">            &#x27;shape&#x27;: tf.train.Feature(int64_list=tf.train.Int64List (value=[img.shape[0], img.shape[1], img.shape[2]])),</span><br><span class="line">            &#x27;data&#x27; : tf.train.Feature(bytes_list=tf.train.BytesList (value=[bytes(img.numpy())]))</span><br><span class="line">        &#125;</span><br><span class="line">    )</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">    </span><br><span class="line">    &quot;&quot;&quot; 3. 序列化,写入&quot;&quot;&quot;</span><br><span class="line">    serialized = example.SerializeToString()</span><br><span class="line">    writer.write(serialized)</span><br></pre></td></tr></table></figure>
+
+<h4 id="1-3-数据读取"><a href="#1-3-数据读取" class="headerlink" title="1.3 数据读取"></a>1.3 数据读取</h4><p>通过写入的example指定参数解析tfrecord</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">reader = tf.data.TFRecordDataset(file_name)</span><br><span class="line"></span><br><span class="line">feature_description = &#123;</span><br><span class="line">    &#x27;name&#x27; : tf.io.FixedLenFeature([], tf.string, default_value=&#x27;Nan&#x27;),</span><br><span class="line">    &#x27;label&#x27;: tf.io.FixedLenFeature([] , tf.int64, default_value=-1),</span><br><span class="line">    &#x27;shape&#x27;: tf.io.FixedLenFeature([3], tf.int64),</span><br><span class="line">    &#x27;data&#x27; : tf.io.FixedLenFeature([], tf.string)</span><br><span class="line">&#125;</span><br><span class="line">def _parse_function (exam_proto):</span><br><span class="line">    return tf.io.parse_single_example (exam_proto, feature_description)</span><br><span class="line"></span><br><span class="line">reader = reader.repeat (1) # 读取数据的重复次数为：1次，这个相当于epoch</span><br><span class="line">reader = reader.shuffle (buffer_size = 2000) # 在缓冲区中随机打乱数据</span><br><span class="line">reader = reader.map (_parse_function) # 解析数据</span><br><span class="line">batch  = reader.batch (batch_size = 10) # 每10条数据为一个batch，生成一个新的Dataset</span><br><span class="line"></span><br><span class="line">shape = []</span><br><span class="line">batch_data_x, batch_data_y = np.array([]), np.array([])</span><br><span class="line">for item in batch.take(1): # 测试，只取1个batch</span><br><span class="line">    shape = item[&#x27;shape&#x27;][0].numpy()</span><br><span class="line">    for data in item[&#x27;data&#x27;]: # 一个item就是一个batch</span><br><span class="line">        img_data = np.frombuffer(data.numpy(), dtype=np.uint8)</span><br><span class="line">        batch_data_x = np.append (batch_data_x, img_data)</span><br><span class="line">    for label in item [&#x27;label&#x27;]:</span><br><span class="line">        batch_data_y = np.append (batch_data_y, label.numpy())</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="2-读取tfrecord制作torch-dataloader"><a href="#2-读取tfrecord制作torch-dataloader" class="headerlink" title="2 读取tfrecord制作torch dataloader"></a>2 读取tfrecord制作torch dataloader</h3><p>上代码</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">def get_dataset(files, batch_size=16, repeat=False, cache=False, shuffle=False, labeled=True, return_image_ids=True):</span><br><span class="line">    ds = tf.data.TFRecordDataset(files, num_parallel_reads=AUTO)</span><br><span class="line">    if cache:</span><br><span class="line">        ds = ds.cache()</span><br><span class="line"></span><br><span class="line">    if repeat:</span><br><span class="line">        ds = ds.repeat()</span><br><span class="line"></span><br><span class="line">    if shuffle:</span><br><span class="line">        ds = ds.shuffle(1024 * 2)</span><br><span class="line">        opt = tf.data.Options()</span><br><span class="line">        opt.experimental_deterministic = False</span><br><span class="line">        ds = ds.with_options(opt)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    ds = ds.map(read_labeled_tfrecord, num_parallel_calls=AUTO)</span><br><span class="line">    ds = ds.batch(batch_size)</span><br><span class="line">    ds = ds.prefetch(AUTO)</span><br><span class="line">    return tfds.as_numpy(ds)</span><br></pre></td></tr></table></figure>
+
+<p>这一部分相当于建了一个tf.data.TFRecordDataset，并且包含了shuffle、repeat、等操作，其核心部分<strong>map</strong>中的 <code>read_labeled_tfrecord</code> 就相当于上面的 <code>_parse_function</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">tfrec_format = &#123;</span><br><span class="line">    &quot;label&quot;: tf.io.FixedLenFeature([], tf.int64),</span><br><span class="line">    &quot;data&quot;: tf.io.FixedLenFeature([], tf.string),</span><br><span class="line">    &quot;id&quot;: tf.io.FixedLenFeature([], tf.string)</span><br><span class="line">&#125;</span><br><span class="line">def read_labeled_tfrecord(example):</span><br><span class="line">    example = tf.io.parse_single_example(example, tfrec_format)</span><br><span class="line">    example[&#x27;data&#x27;] = decode_wave(example[&#x27;data&#x27;])</span><br><span class="line">    return example</span><br></pre></td></tr></table></figure>
+
+<p>解析时，在本例中需要用到解码，因为在制作tfrecords时使用了 <code>raw = data.astype(np.float32).tobytes()</code> ，将三段4096长度的音频encode了，因此，解码函数为</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">def decode_wave(wave):</span><br><span class="line">    wave = tf.reshape(tf.io.decode_raw(wave, tf.float32), (3, 4096))</span><br><span class="line">    normalized_waves = []</span><br><span class="line">    for i in range(3):</span><br><span class="line">        normalized_waves.append(wave[i])</span><br><span class="line">    wave = tf.stack(normalized_waves, axis=0)</span><br><span class="line">    wave = tf.cast(wave, tf.float32)</span><br><span class="line">    return wave</span><br></pre></td></tr></table></figure>
+
+<p>再利用dataset制作dataloader，先上代码</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line">class TFRecordDataLoader:</span><br><span class="line">    def __init__(self, files, batch_size=16, cache=False, train=True, repeat=False, shuffle=False, labeled=True, return_image_ids=True):</span><br><span class="line">        self.ds = get_dataset(</span><br><span class="line">            files, </span><br><span class="line">            batch_size=batch_size,</span><br><span class="line">            cache=cache,</span><br><span class="line">            repeat=repeat,</span><br><span class="line">            shuffle=shuffle,</span><br><span class="line">            labeled=labeled,</span><br><span class="line">            return_image_ids=return_image_ids)</span><br><span class="line">        </span><br><span class="line">        if train:</span><br><span class="line">            self.num_examples = count_data_items(files)</span><br><span class="line">        else:</span><br><span class="line">            self.num_examples = count_data_items_test(files)</span><br><span class="line"></span><br><span class="line">        self.batch_size = batch_size</span><br><span class="line">        self.labeled = labeled</span><br><span class="line">        self.return_image_ids = return_image_ids</span><br><span class="line">        self._iterator = None</span><br><span class="line">    </span><br><span class="line">    def __iter__(self):</span><br><span class="line">        if self._iterator is None:</span><br><span class="line">            self._iterator = iter(self.ds)</span><br><span class="line">        else:</span><br><span class="line">            self._reset()</span><br><span class="line">        return self._iterator</span><br><span class="line"></span><br><span class="line">    def _reset(self):</span><br><span class="line">        self._iterator = iter(self.ds)</span><br><span class="line"></span><br><span class="line">    def __next__(self):</span><br><span class="line">        batch = next(self._iterator)</span><br><span class="line">        return batch</span><br><span class="line"></span><br><span class="line">    def __len__(self):</span><br><span class="line">        n_batches = self.num_examples // self.batch_size</span><br><span class="line">        if self.num_examples % self.batch_size == 0:</span><br><span class="line">            return n_batches</span><br><span class="line">        else:</span><br><span class="line">            return n_batches + 1</span><br></pre></td></tr></table></figure>
+
+<p>其中最重要的几个方法涉及到了<strong>iterator</strong>，因为dataloader本身就是一个iterator，下面以此介绍</p>
+<ul>
+<li><code>__iter__(self)</code>:  <code>self._iterator = iter(self.ds)</code> 将可迭代对象加载为成迭代器。</li>
+<li><code>__next__(self)</code>: 获取下一个对象 <code>batch = next(self._iterator)</code>.</li>
+<li><code>__len__(self)</code>: 返回迭代器的长度。</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/pytorch/" rel="tag"># pytorch</a>
+              <a href="/tags/tensorflow/" rel="tag"># tensorflow</a>
+              <a href="/tags/tfrecords/" rel="tag"># tfrecords</a>
+              <a href="/tags/dataloader/" rel="tag"># dataloader</a>
+              <a href="/tags/iterator/" rel="tag"># iterator</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/08/25/iterator-and-generator/" rel="prev" title="迭代器与生成器 Iterator andgenerator">
+      <i class="fa fa-chevron-left"></i> 迭代器与生成器 Iterator andgenerator
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/08/30/about-thinking-21-8-29/" rel="next" title="个人思考">
+      个人思考 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-tfrecords%E6%96%87%E4%BB%B6%E8%AF%BB%E5%8F%96"><span class="nav-number">1.</span> <span class="nav-text">1 tfrecords文件读取</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-1-tfrecords%E6%96%87%E4%BB%B6%E7%9A%84%E7%BB%93%E6%9E%84"><span class="nav-number">1.1.</span> <span class="nav-text">1.1 tfrecords文件的结构</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-2-%E6%95%B0%E6%8D%AE%E5%86%99%E5%85%A5"><span class="nav-number">1.2.</span> <span class="nav-text">1.2 数据写入</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-3-%E6%95%B0%E6%8D%AE%E8%AF%BB%E5%8F%96"><span class="nav-number">1.3.</span> <span class="nav-text">1.3 数据读取</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E8%AF%BB%E5%8F%96tfrecord%E5%88%B6%E4%BD%9Ctorch-dataloader"><span class="nav-number">2.</span> <span class="nav-text">2 读取tfrecord制作torch dataloader</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Shi"
+      src="/images/jiraiya.jpg">
+  <p class="site-author-name" itemprop="name">Shi</p>
+  <div class="site-description" itemprop="description">谦虚 学习 坚忍</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">14</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">20</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Shi</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

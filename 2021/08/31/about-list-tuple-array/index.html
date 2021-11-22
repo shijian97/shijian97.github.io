@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-taiji.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-taiji.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"always","padding":18,"offset":12,"onmobile":false,"dimmer":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="python以及pytorch中许多都会涉及到数组或者列表，需加以区分。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数组杂谈">
+<meta property="og:url" content="http://example.com/2021/08/31/about-list-tuple-array/index.html">
+<meta property="og:site_name" content="wanderland">
+<meta property="og:description" content="python以及pytorch中许多都会涉及到数组或者列表，需加以区分。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-08-31T01:45:41.000Z">
+<meta property="article:modified_time" content="2021-09-01T08:27:06.148Z">
+<meta property="article:author" content="Shi">
+<meta property="article:tag" content="python">
+<meta property="article:tag" content="tuple">
+<meta property="article:tag" content="list">
+<meta property="article:tag" content="ndarray">
+<meta property="article:tag" content="numpy">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://example.com/2021/08/31/about-list-tuple-array/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>数组杂谈 | wanderland</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">wanderland</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/08/31/about-list-tuple-array/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/jiraiya.jpg">
+      <meta itemprop="name" content="Shi">
+      <meta itemprop="description" content="谦虚 学习 坚忍">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="wanderland">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          数组杂谈
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-08-31 09:45:41" itemprop="dateCreated datePublished" datetime="2021-08-31T09:45:41+08:00">2021-08-31</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-09-01 16:27:06" itemprop="dateModified" datetime="2021-09-01T16:27:06+08:00">2021-09-01</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">学习</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%AD%A6%E4%B9%A0/coding/" itemprop="url" rel="index"><span itemprop="name">coding</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>python以及pytorch中许多都会涉及到数组或者列表，需加以区分。</p>
+<span id="more"></span>
+<h3 id="总述"><a href="#总述" class="headerlink" title="总述"></a>总述</h3><p>常用数据结构包括<strong>元组</strong> <strong>列表</strong> <strong>字典</strong> <strong>集合</strong>等，这些属于内建函数，而numpy的数组<strong>ndarray</strong>也是在机器学习中常用的，下面会记录较为重要的<strong>元组</strong> <strong>列表</strong> <strong>数组</strong></p>
+<h3 id="元组"><a href="#元组" class="headerlink" title="元组"></a>元组</h3><p>元组是一种固定长度，不可变的对象序列。</p>
+<ul>
+<li><p><code>tuple()</code>将任意序列或者迭代器转换为元组</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">In []: tuple([4, 0, 2])</span><br><span class="line">Out[]: (4, 0, 2)</span><br></pre></td></tr></table></figure></li>
+<li><p>用<code>+</code>号或者<code>*</code>号来链接元组</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">In []: (4, None, &#x27;foo&#x27;) + (6, 0)</span><br><span class="line">Out[]: (4, None, &#x27;foo&#x27;, 6, 2)</span><br><span class="line"></span><br><span class="line">In []: (4, 0, 2) * 2</span><br><span class="line">Out[]: (4, 0, 2, 4, 0, 2)</span><br></pre></td></tr></table></figure></li>
+<li><p>由于元组的内容与长度无法改变，因此实例方法较少。常见的有<code>count</code>方法，作用是计算某个数值在元组中出现的次数</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">In []: a = (4, 2, 0, 2, 2)</span><br><span class="line">In []: a.count(2)</span><br><span class="line">Out[]: 3</span><br></pre></td></tr></table></figure></li>
+<li><p>使用[i]索引获取元组指定位置i的对象</p>
+</li>
+</ul>
+<h3 id="列表"><a href="#列表" class="headerlink" title="列表"></a>列表</h3><p>与元组不同，列表长度可变，内容可修改。</p>
+<ul>
+<li><p>使用中括号[]或者list类型来定义列表</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">In []:a_list = [2, 3, None]</span><br><span class="line">In []:tup = 2, 3, None</span><br><span class="line">In []:b_list = list(tup)</span><br></pre></td></tr></table></figure></li>
+<li><p>函数用法和tuple相似</p>
+</li>
+<li><p>可以将迭代器或者生成器变为列表</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">In []: gen = range(10)</span><br><span class="line">In []: list(gen)</span><br><span class="line">Out[]: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]</span><br></pre></td></tr></table></figure></li>
+<li><p>元素的增添或移除<br>  – <code>.append()</code>将元素添加到列表尾部<br>  – <code>.insert(loc, obj)</code>在loc位置添加obj<br>  – <code>.remove()</code>移除第一个符合要求的值<br>  – <code>.pop()</code>将特定元素移除并返回</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">In []: a = [1, 2, 3, 4]</span><br><span class="line">In []: a.append(5)</span><br><span class="line">Out[]: [1, 2, 3, 4, 5]</span><br><span class="line">In []: a.insert(1, 999)</span><br><span class="line">Out[]: [1, 999, 2, 3, 4, 5]</span><br></pre></td></tr></table></figure></li>
+<li><p>列表的链接和移除<br>  – 与元组类似，两个列表之间使用+号连接<br>  – 若有已经定义的数据集，可以用extend向该列表添加元素</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">In []: a = [1, 2, 3, 4]</span><br><span class="line">In []: a.extend([&#x27;foo&#x27;, None, (1,2)])</span><br><span class="line">In []: a</span><br><span class="line">Out[]: [1, 2, 3, 4, &#x27;foo&#x27;, None, (1,2)]</span><br></pre></td></tr></table></figure></li>
+<li><p>排序 sort</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">In []: a = [2, 3, 1, 4]</span><br><span class="line">In []: a.sort()</span><br><span class="line">In []: a</span><br><span class="line">Out[]: [1, 2, 3, 4]</span><br></pre></td></tr></table></figure>
+<p>sort函数会有二级排序key</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">In []: a = [&#x27;a&#x27;, &#x27;asd&#x27;, &#x27;asdf&#x27;, &#x27;as&#x27;]</span><br><span class="line">In []: a.sort(key=len)</span><br><span class="line">In []: a</span><br><span class="line">Out[]: [&#x27;a&#x27;, &#x27;as&#x27;, &#x27;asd&#x27;, &#x27;asdf&#x27;]</span><br></pre></td></tr></table></figure></li>
+<li><p>切片start包含，stop不包含</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">In []: a = [2, 3, 1, 4]</span><br><span class="line">In []: a[-1:0]</span><br><span class="line">Out[]: [4]</span><br><span class="line">In []: a[::2] #步长</span><br><span class="line">Out[]: [2,1]</span><br><span class="line">In []: a[::-1] #相当于翻转</span><br><span class="line">Out[]: [4, 1, 2, 3]</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="ndarray"><a href="#ndarray" class="headerlink" title="ndarray"></a>ndarray</h3><p>import numpy as np<br>numpy方法比python内建方法快速、占用内存小，用C语言写成。<br>较为重要的通用属性：shape属性表征<em>每一维度的数量</em>，ndim属性描述<em>数组的维数</em>，dtype属性描述<em>数组的数据类型</em>。</p>
+<ul>
+<li>生成ndarray<br>  – 使用array函数<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">In []: data_a = [1, 2, 3, 4]</span><br><span class="line">In []: ary_a = np.array(data_a)</span><br><span class="line">In []: a</span><br><span class="line">Out[]: array([[1, 2, 3, 4]])</span><br></pre></td></tr></table></figure>
+  – 使用<code>np.zeros(num)</code>可以生成num数量够的全0数组，<code>np.ones(num)</code>同理。<br>  – <code>np.arange()</code>为内建函数的range数组版<br>  默认类型为float64.</li>
+<li>ndarray的数据类型<br>使用astype方法显式转换数组<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">In []: arr = np.array([1, 2, 3, 4])</span><br><span class="line">In []: arr.dtype</span><br><span class="line">Out[]: dtype(&#x27;int64&#x27;)</span><br><span class="line">In []: float_arr = arr.astype(np.float64)</span><br><span class="line">In []: float_arr.dtype</span><br><span class="line">Out[]: dtype(&#x27;float64&#x27;)</span><br></pre></td></tr></table></figure></li>
+<li>基础切片与索引与列表同</li>
+<li>数组转置和换轴<br>  – <strong>transpose</strong>方法<br>  – <strong>T</strong>属性（转置）</li>
+<li>一元与二元通用函数：对数组每个元素进行计算</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/python/" rel="tag"># python</a>
+              <a href="/tags/tuple/" rel="tag"># tuple</a>
+              <a href="/tags/list/" rel="tag"># list</a>
+              <a href="/tags/ndarray/" rel="tag"># ndarray</a>
+              <a href="/tags/numpy/" rel="tag"># numpy</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/08/30/about-thinking-21-8-29/" rel="prev" title="个人思考">
+      <i class="fa fa-chevron-left"></i> 个人思考
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/08/31/about-matplotlib/" rel="next" title="matplotlib基础">
+      matplotlib基础 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%80%BB%E8%BF%B0"><span class="nav-number">1.</span> <span class="nav-text">总述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%83%E7%BB%84"><span class="nav-number">2.</span> <span class="nav-text">元组</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%97%E8%A1%A8"><span class="nav-number">3.</span> <span class="nav-text">列表</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ndarray"><span class="nav-number">4.</span> <span class="nav-text">ndarray</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Shi"
+      src="/images/jiraiya.jpg">
+  <p class="site-author-name" itemprop="name">Shi</p>
+  <div class="site-description" itemprop="description">谦虚 学习 坚忍</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">14</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">20</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Shi</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
