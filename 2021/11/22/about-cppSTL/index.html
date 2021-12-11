@@ -219,203 +219,217 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>C++中STL常见容器的一些常用方法。</p>
-<span id="more"></span>
-
+        <p>C++中STL常见容器的一些常用方法。<br><span id="more"></span></p>
 <h3 id="顺序容器"><a href="#顺序容器" class="headerlink" title="顺序容器"></a>顺序容器</h3><p>顺序容器有以下三种：可变长动态数组 vector、双端队列 deque、双向链表 list。<br>它们之所以被称为顺序容器，是因为元素在容器中的位置同元素的值无关，即容器不是排序的。将元素插入容器时，指定在什么位置（尾部、头部或中间某处）插入，元素就会位于什么位置。</p>
 <h4 id="vector"><a href="#vector" class="headerlink" title="vector"></a>vector</h4><p>头文件 <code>include&lt;vector&gt;</code><br>初始化 <code>vector&lt;struc&gt; vec;</code></p>
+<div class="table-container">
 <table>
 <thead>
 <tr>
-<th align="left">函数名</th>
-<th align="left">作用</th>
-<th align="left">返回值</th>
+<th style="text-align:left">函数名</th>
+<th style="text-align:left">作用</th>
+<th style="text-align:left">返回值</th>
 </tr>
 </thead>
-<tbody><tr>
-<td align="left">vec.size()</td>
-<td align="left">返回vector长度</td>
-<td align="left">int</td>
+<tbody>
+<tr>
+<td style="text-align:left">vec.size()</td>
+<td style="text-align:left">返回vector长度</td>
+<td style="text-align:left">int</td>
 </tr>
 <tr>
-<td align="left">vec.empty()</td>
-<td align="left">判断vector是否为空</td>
-<td align="left">bool</td>
+<td style="text-align:left">vec.empty()</td>
+<td style="text-align:left">判断vector是否为空</td>
+<td style="text-align:left">bool</td>
 </tr>
 <tr>
-<td align="left">vec.push_back(x)</td>
-<td align="left">尾部添加元素</td>
-<td align="left">无返回值</td>
+<td style="text-align:left">vec.push_back(x)</td>
+<td style="text-align:left">尾部添加元素</td>
+<td style="text-align:left">无返回值</td>
 </tr>
 <tr>
-<td align="left">vec.pop_back()</td>
-<td align="left">删除尾部元素</td>
-<td align="left">无返回值</td>
+<td style="text-align:left">vec.pop_back()</td>
+<td style="text-align:left">删除尾部元素</td>
+<td style="text-align:left">无返回值</td>
 </tr>
 <tr>
-<td align="left">vec.begin()</td>
-<td align="left">指向首位置的迭代器</td>
-<td align="left">vector<struc>::iterator iter = vec.begin()</td>
+<td style="text-align:left">vec.begin()</td>
+<td style="text-align:left">指向首位置的迭代器</td>
+<td style="text-align:left">vector<struc>::iterator iter = vec.begin()</td>
 </tr>
 <tr>
-<td align="left">vec.end()</td>
-<td align="left">返回最后一个元素的下一个位置的迭代器</td>
-<td align="left">同上</td>
+<td style="text-align:left">vec.end()</td>
+<td style="text-align:left">返回最后一个元素的下一个位置的迭代器</td>
+<td style="text-align:left">同上</td>
 </tr>
 <tr>
-<td align="left">vec.front()</td>
-<td align="left">返回第一个元素的引用</td>
-<td align="left">struc</td>
+<td style="text-align:left">vec.front()</td>
+<td style="text-align:left">返回第一个元素的引用</td>
+<td style="text-align:left">struc</td>
 </tr>
 <tr>
-<td align="left">vec.back()</td>
-<td align="left">返回最后一个元素的引用</td>
-<td align="left">struc</td>
+<td style="text-align:left">vec.back()</td>
+<td style="text-align:left">返回最后一个元素的引用</td>
+<td style="text-align:left">struc</td>
 </tr>
 <tr>
-<td align="left">vec[0]</td>
-<td align="left">返回首位置的值</td>
-<td align="left">struc</td>
+<td style="text-align:left">vec[0]</td>
+<td style="text-align:left">返回首位置的值</td>
+<td style="text-align:left">struc</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
+</div>
 <h4 id="deque（双端队列）"><a href="#deque（双端队列）" class="headerlink" title="deque（双端队列）"></a>deque（双端队列）</h4><p>头文件 <code>include&lt;deque&gt;</code><br>初始化 <code>deque&lt;struc&gt; deq;</code></p>
+<div class="table-container">
 <table>
 <thead>
 <tr>
-<th align="left">函数名</th>
-<th align="left">作用</th>
-<th align="left">返回值</th>
+<th style="text-align:left">函数名</th>
+<th style="text-align:left">作用</th>
+<th style="text-align:left">返回值</th>
 </tr>
 </thead>
-<tbody><tr>
-<td align="left">deq.size()</td>
-<td align="left">返回deque长度</td>
-<td align="left">int</td>
+<tbody>
+<tr>
+<td style="text-align:left">deq.size()</td>
+<td style="text-align:left">返回deque长度</td>
+<td style="text-align:left">int</td>
 </tr>
 <tr>
-<td align="left">deq.empty()</td>
-<td align="left">判断deque是否为空</td>
-<td align="left">bool</td>
+<td style="text-align:left">deq.empty()</td>
+<td style="text-align:left">判断deque是否为空</td>
+<td style="text-align:left">bool</td>
 </tr>
 <tr>
-<td align="left">deq.push_back(x)</td>
-<td align="left">尾部添加元素</td>
-<td align="left">无返回值</td>
+<td style="text-align:left">deq.push_back(x)</td>
+<td style="text-align:left">尾部添加元素</td>
+<td style="text-align:left">无返回值</td>
 </tr>
 <tr>
-<td align="left">deq.push_front(x)</td>
-<td align="left">头部添加元素</td>
-<td align="left">无返回值</td>
+<td style="text-align:left">deq.push_front(x)</td>
+<td style="text-align:left">头部添加元素</td>
+<td style="text-align:left">无返回值</td>
 </tr>
 <tr>
-<td align="left">deq.pop_back()</td>
-<td align="left">删除尾部元素</td>
-<td align="left">无返回值</td>
+<td style="text-align:left">deq.pop_back()</td>
+<td style="text-align:left">删除尾部元素</td>
+<td style="text-align:left">无返回值</td>
 </tr>
 <tr>
-<td align="left">deq.pop_front()</td>
-<td align="left">删除头部元素</td>
-<td align="left">无返回值</td>
+<td style="text-align:left">deq.pop_front()</td>
+<td style="text-align:left">删除头部元素</td>
+<td style="text-align:left">无返回值</td>
 </tr>
 <tr>
-<td align="left">deq.begin()</td>
-<td align="left">指向首位置的迭代器</td>
-<td align="left">deque<struc>::iterator iter = deq.begin()</td>
+<td style="text-align:left">deq.begin()</td>
+<td style="text-align:left">指向首位置的迭代器</td>
+<td style="text-align:left">deque<struc>::iterator iter = deq.begin()</td>
 </tr>
 <tr>
-<td align="left">deq.end()</td>
-<td align="left">返回最后一个元素的下一个位置的迭代器</td>
-<td align="left">同上</td>
+<td style="text-align:left">deq.end()</td>
+<td style="text-align:left">返回最后一个元素的下一个位置的迭代器</td>
+<td style="text-align:left">同上</td>
 </tr>
 <tr>
-<td align="left">deq.front()</td>
-<td align="left">返回第一个元素的引用</td>
-<td align="left">struc</td>
+<td style="text-align:left">deq.front()</td>
+<td style="text-align:left">返回第一个元素的引用</td>
+<td style="text-align:left">struc</td>
 </tr>
 <tr>
-<td align="left">deq.back()</td>
-<td align="left">返回最后一个元素的引用</td>
-<td align="left">struc</td>
+<td style="text-align:left">deq.back()</td>
+<td style="text-align:left">返回最后一个元素的引用</td>
+<td style="text-align:left">struc</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
+</div>
 <h4 id="list"><a href="#list" class="headerlink" title="list"></a>list</h4><p>头文件 <code>include&lt;list&gt;</code><br>初始化 <code>list&lt;struc&gt; li;</code></p>
+<div class="table-container">
 <table>
 <thead>
 <tr>
-<th align="left">函数名</th>
-<th align="left">作用</th>
-<th align="left">返回值</th>
+<th style="text-align:left">函数名</th>
+<th style="text-align:left">作用</th>
+<th style="text-align:left">返回值</th>
 </tr>
 </thead>
-<tbody><tr>
-<td align="left">li.size()</td>
-<td align="left">返回li长度</td>
-<td align="left">int</td>
+<tbody>
+<tr>
+<td style="text-align:left">li.size()</td>
+<td style="text-align:left">返回li长度</td>
+<td style="text-align:left">int</td>
 </tr>
 <tr>
-<td align="left">li.empty()</td>
-<td align="left">判断li是否为空</td>
-<td align="left">bool</td>
+<td style="text-align:left">li.empty()</td>
+<td style="text-align:left">判断li是否为空</td>
+<td style="text-align:left">bool</td>
 </tr>
 <tr>
-<td align="left">li.push_back(x)</td>
-<td align="left">尾部添加元素</td>
-<td align="left">无返回值</td>
+<td style="text-align:left">li.push_back(x)</td>
+<td style="text-align:left">尾部添加元素</td>
+<td style="text-align:left">无返回值</td>
 </tr>
 <tr>
-<td align="left">li.push_front(x)</td>
-<td align="left">头部添加元素</td>
-<td align="left">无返回值</td>
+<td style="text-align:left">li.push_front(x)</td>
+<td style="text-align:left">头部添加元素</td>
+<td style="text-align:left">无返回值</td>
 </tr>
 <tr>
-<td align="left">li.pop_back()</td>
-<td align="left">删除尾部元素</td>
-<td align="left">无返回值</td>
+<td style="text-align:left">li.pop_back()</td>
+<td style="text-align:left">删除尾部元素</td>
+<td style="text-align:left">无返回值</td>
 </tr>
 <tr>
-<td align="left">li.pop_front()</td>
-<td align="left">删除头部元素</td>
-<td align="left">无返回值</td>
+<td style="text-align:left">li.pop_front()</td>
+<td style="text-align:left">删除头部元素</td>
+<td style="text-align:left">无返回值</td>
 </tr>
 <tr>
-<td align="left">li.begin()</td>
-<td align="left">指向首位置的双向迭代器</td>
-<td align="left">list<struc>::iterator iter = li.begin()</td>
+<td style="text-align:left">li.begin()</td>
+<td style="text-align:left">指向首位置的双向迭代器</td>
+<td style="text-align:left">list<struc>::iterator iter = li.begin()</td>
 </tr>
 <tr>
-<td align="left">li.end()</td>
-<td align="left">返回最后一个元素的下一个位置的双向迭代器</td>
-<td align="left">同上</td>
+<td style="text-align:left">li.end()</td>
+<td style="text-align:left">返回最后一个元素的下一个位置的双向迭代器</td>
+<td style="text-align:left">同上</td>
 </tr>
 <tr>
-<td align="left">li.front()</td>
-<td align="left">返回第一个元素的引用</td>
-<td align="left">struc</td>
+<td style="text-align:left">li.front()</td>
+<td style="text-align:left">返回第一个元素的引用</td>
+<td style="text-align:left">struc</td>
 </tr>
 <tr>
-<td align="left">li.back()</td>
-<td align="left">返回最后一个元素的引用</td>
-<td align="left">struc</td>
+<td style="text-align:left">li.back()</td>
+<td style="text-align:left">返回最后一个元素的引用</td>
+<td style="text-align:left">struc</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
+</div>
 <p>顺序容器总结有如下常用成员函数<br>front()：返回容器中第一个元素的引用。<br>back()：返回容器中最后一个元素的引用。<br>push_back()：在容器末尾增加新元素。<br>pop_back()：删除容器末尾的元素。<br>insert(…)：插入一个或多个元素。该函数参数较复杂，此处省略。</p>
 <h3 id="容器适配器"><a href="#容器适配器" class="headerlink" title="容器适配器"></a>容器适配器</h3><p>栈 stack、队列 queue、优先级队列 priority_queue。</p>
 <h4 id="queue"><a href="#queue" class="headerlink" title="queue"></a>queue</h4><p>特点：先进先出</p>
 <p>头文件 <code>include&lt;queue&gt;</code><br>初始化 <code>queue&lt;struc&gt; que</code></p>
+<div class="table-container">
 <table>
 <thead>
 <tr>
-<th align="left">函数名</th>
-<th align="left">作用</th>
-<th align="left">返回值</th>
+<th style="text-align:left">函数名</th>
+<th style="text-align:left">作用</th>
+<th style="text-align:left">返回值</th>
 </tr>
 </thead>
-<tbody><tr>
-<td align="left">que.size()</td>
-<td align="left">返回que长度</td>
-<td align="left">int</td>
+<tbody>
+<tr>
+<td style="text-align:left">que.size()</td>
+<td style="text-align:left">返回que长度</td>
+<td style="text-align:left">int</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
+</div>
 
     </div>
 

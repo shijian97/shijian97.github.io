@@ -219,90 +219,93 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>学习matplotlib的应用</p>
-<span id="more"></span>
-
-<h3 id="简单matplotlibAPI"><a href="#简单matplotlibAPI" class="headerlink" title="简单matplotlibAPI"></a>简单matplotlibAPI</h3><p>导入<br><code>In [0]: import matplotlib.pyplot as plt</code><br>简单的使用</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">In [1]: import numpy as np</span><br><span class="line">In [2]: data = np.arange(10)</span><br><span class="line">In [3]: plt.plot(data)</span><br></pre></td></tr></table></figure>
-
-<h4 id="图片与子图"><a href="#图片与子图" class="headerlink" title="图片与子图"></a>图片与子图</h4><p>matplotlib绘制的图片位于Figure对象中，使用plt.figure生成一个新图片。<br>使用subplot生成2X2的子图并布置在左上角的位置</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">In [4]: fig = plt.figure()</span><br><span class="line">In [5]: ax1 = fig.add_subplot(2,2,1)</span><br></pre></td></tr></table></figure>
-
+        <p>学习matplotlib的应用<br><span id="more"></span></p>
+<h3 id="简单matplotlibAPI"><a href="#简单matplotlibAPI" class="headerlink" title="简单matplotlibAPI"></a>简单matplotlibAPI</h3><p>导入<br><code>In [0]: import matplotlib.pyplot as plt</code><br>简单的使用<br><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">In [1]: import numpy as np</span><br><span class="line">In [2]: data = np.arange(10)</span><br><span class="line">In [3]: plt.plot(data)</span><br></pre></td></tr></table></figure></p>
+<h4 id="图片与子图"><a href="#图片与子图" class="headerlink" title="图片与子图"></a>图片与子图</h4><p>matplotlib绘制的图片位于Figure对象中，使用plt.figure生成一个新图片。<br>使用subplot生成2X2的子图并布置在左上角的位置<br><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">In [4]: fig = plt.figure()</span><br><span class="line">In [5]: ax1 = fig.add_subplot(2,2,1)</span><br></pre></td></tr></table></figure></p>
 <h4 id="画图"><a href="#画图" class="headerlink" title="画图"></a>画图</h4><ul>
 <li><p>matplotlib主函数接收带有x和y轴的数组以及参数。<br><code>ax.plot(x,y,linestyle=&#39;--&#39;,color=&#39;g&#39;)</code>或者<code>ax.plot(x,y,&#39;g--&#39;)</code></p>
 </li>
 <li><p>设置刻度标签和图例</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">ticks = ax.set_xticks([0,250,500,750,1000])</span><br><span class="line">labels = ax.set_xticklabels([&#x27;one&#x27;,&#x27;two&#x27;,&#x27;three&#x27;,&#x27;four&#x27;,&#x27;five&#x27;])</span><br><span class="line">ax.set_title(&#x27;My PLT&#x27;)</span><br><span class="line">ax.set_xlabel(&#x27;Stage&#x27;)</span><br></pre></td></tr></table></figure></li>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">ticks = ax.set_xticks([0,250,500,750,1000])</span><br><span class="line">labels = ax.set_xticklabels([&#x27;one&#x27;,&#x27;two&#x27;,&#x27;three&#x27;,&#x27;four&#x27;,&#x27;five&#x27;])</span><br><span class="line">ax.set_title(&#x27;My PLT&#x27;)</span><br><span class="line">ax.set_xlabel(&#x27;Stage&#x27;)</span><br></pre></td></tr></table></figure>
+</li>
 </ul>
 <h3 id="使用pandas"><a href="#使用pandas" class="headerlink" title="使用pandas"></a>使用pandas</h3><p>Series和DataFrame都有一个plot属性，用于绘制图形，默认为折线图，有一些简单的方法参数。</p>
-<h4 id="Series-plot-方法参数"><a href="#Series-plot-方法参数" class="headerlink" title="Series.plot()方法参数"></a>Series.plot()方法参数</h4><table>
+<h4 id="Series-plot-方法参数"><a href="#Series-plot-方法参数" class="headerlink" title="Series.plot()方法参数"></a>Series.plot()方法参数</h4><div class="table-container">
+<table>
 <thead>
 <tr>
-<th align="left">参数</th>
-<th align="left">描述</th>
+<th style="text-align:left">参数</th>
+<th style="text-align:left">描述</th>
 </tr>
 </thead>
-<tbody><tr>
-<td align="left">label</td>
-<td align="left">图里标签</td>
+<tbody>
+<tr>
+<td style="text-align:left">label</td>
+<td style="text-align:left">图里标签</td>
 </tr>
 <tr>
-<td align="left">ax</td>
-<td align="left">子图对象</td>
+<td style="text-align:left">ax</td>
+<td style="text-align:left">子图对象</td>
 </tr>
 <tr>
-<td align="left">style</td>
-<td align="left">样式</td>
+<td style="text-align:left">style</td>
+<td style="text-align:left">样式</td>
 </tr>
 <tr>
-<td align="left">kind</td>
-<td align="left">area bar barh density hist kde line pie等</td>
+<td style="text-align:left">kind</td>
+<td style="text-align:left">area bar barh density hist kde line pie等</td>
 </tr>
 <tr>
-<td align="left">logy</td>
-<td align="left">y轴对数缩放</td>
+<td style="text-align:left">logy</td>
+<td style="text-align:left">y轴对数缩放</td>
 </tr>
 <tr>
-<td align="left">xticks</td>
-<td align="left">x的刻度值</td>
+<td style="text-align:left">xticks</td>
+<td style="text-align:left">x的刻度值</td>
 </tr>
 <tr>
-<td align="left">yticks</td>
-<td align="left">y的刻度值</td>
+<td style="text-align:left">yticks</td>
+<td style="text-align:left">y的刻度值</td>
 </tr>
 <tr>
-<td align="left">xlim</td>
-<td align="left">x轴范围</td>
+<td style="text-align:left">xlim</td>
+<td style="text-align:left">x轴范围</td>
 </tr>
 <tr>
-<td align="left">ylim</td>
-<td align="left">y轴范围</td>
+<td style="text-align:left">ylim</td>
+<td style="text-align:left">y轴范围</td>
 </tr>
-</tbody></table>
-<h4 id="DataFrame-plot-参数"><a href="#DataFrame-plot-参数" class="headerlink" title="DataFrame.plot()参数"></a>DataFrame.plot()参数</h4><table>
+</tbody>
+</table>
+</div>
+<h4 id="DataFrame-plot-参数"><a href="#DataFrame-plot-参数" class="headerlink" title="DataFrame.plot()参数"></a>DataFrame.plot()参数</h4><div class="table-container">
+<table>
 <thead>
 <tr>
-<th align="left">参数</th>
-<th align="left">描述</th>
+<th style="text-align:left">参数</th>
+<th style="text-align:left">描述</th>
 </tr>
 </thead>
-<tbody><tr>
-<td align="left">subplots</td>
-<td align="left">将df每一列绘制在独立子图中</td>
+<tbody>
+<tr>
+<td style="text-align:left">subplots</td>
+<td style="text-align:left">将df每一列绘制在独立子图中</td>
 </tr>
 <tr>
-<td align="left">sharex</td>
-<td align="left">subplots=True共享x轴</td>
+<td style="text-align:left">sharex</td>
+<td style="text-align:left">subplots=True共享x轴</td>
 </tr>
 <tr>
-<td align="left">sharey</td>
-<td align="left">subplots=True共享y轴</td>
+<td style="text-align:left">sharey</td>
+<td style="text-align:left">subplots=True共享y轴</td>
 </tr>
 <tr>
-<td align="left">title</td>
-<td align="left">标题</td>
+<td style="text-align:left">title</td>
+<td style="text-align:left">标题</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
+</div>
 <h4 id="柱状图"><a href="#柱状图" class="headerlink" title="柱状图"></a>柱状图</h4><p>plot.bar()和plot.barh()分别绘制垂直和水平的柱状图</p>
 
     </div>

@@ -219,13 +219,9 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>torch中使用数据增强的一些技巧和方法。</p>
-<span id="more"></span>
-
+        <p>torch中使用数据增强的一些技巧和方法。<br><span id="more"></span></p>
 <h3 id="对tensor进行shuffle"><a href="#对tensor进行shuffle" class="headerlink" title="对tensor进行shuffle"></a>对tensor进行shuffle</h3><h4 id="对所有element随机shuffle"><a href="#对所有element随机shuffle" class="headerlink" title="对所有element随机shuffle"></a>对所有element随机shuffle</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">t=torch.tensor([[1, 2, 3],[3, 4, 5]])</span><br><span class="line">print(t)</span><br><span class="line">idx = torch.randperm(t.nelement())</span><br><span class="line">t = t.view(-1)[idx].view(t.size())</span><br><span class="line">print(t)</span><br></pre></td></tr></table></figure>
-
 <h4 id="按照某一特定维度进行shuffle"><a href="#按照某一特定维度进行shuffle" class="headerlink" title="按照某一特定维度进行shuffle"></a>按照某一特定维度进行shuffle</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">t=torch.tensor([[1, 2, 3],[3, 4, 5]])</span><br><span class="line">print(t)</span><br><span class="line">idx = torch.randperm(t.shape[1])</span><br><span class="line">t = t[:, idx].view(t.size())</span><br><span class="line">print(t)</span><br></pre></td></tr></table></figure>
-
 <p>把原先tensor中的数据按照行优先的顺序排成一个一维的数据（这里应该是因为要求地址是连续存储的），然后按照参数组合成其他维度的tensor。比如说是不管你原先的数据是[[[1,2,3],[4,5,6]]]还是[1,2,3,4,5,6]，因为它们排成一维向量都是6个元素，所以只要view后面的参数一致，得到的结果都是一样的。</p>
 
     </div>

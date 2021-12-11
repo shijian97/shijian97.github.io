@@ -220,11 +220,10 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>关于iterator和generator的区别于联系。</p>
-<span id="more"></span>
+        <p>关于iterator和generator的区别于联系。<br><span id="more"></span></p>
 <h3 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h3><p>简单来说生成器是一种特殊的迭代器，而可迭代对象有下面三种：</p>
 <ul>
-<li>迭代器 –&gt; 生成器</li>
+<li>迭代器 —&gt; 生成器</li>
 <li>序列（字符串、列表、元组）</li>
 <li>字典</li>
 </ul>
@@ -233,20 +232,16 @@
 <p>&emsp;&emsp;生成器是一个特殊的程序，可以被用作控制循环的迭代行为，python中生成器是迭代器的一种，使用yield返回值函数，每次调用<strong>yield</strong>会暂停，而可以使用 <code>next()</code> 函数和 <code>send()</code> 函数恢复生成器。</p>
 <p>&emsp;&emsp;生成器类似于返回值为数组的一个函数，这个函数可以接受参数，可以被调用，但是，不同于一般的函数会一次性返回包括了所有数值的数组，生成器一次只能产生一个值，这样消耗的内存数量将大大减小，而且允许调用函数可以很快的处理前几个返回值，因此生成器看起来像是一个函数，但是表现得却像是迭代器。</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">#列表生成式</span><br><span class="line">lis = [x*x for x in range(10)]</span><br><span class="line">print(lis)</span><br><span class="line">#生成器</span><br><span class="line">generator_ex = (x*x for x in range(10))</span><br><span class="line">print(generator_ex)</span><br><span class="line"> </span><br><span class="line">结果：</span><br><span class="line">[0, 1, 4, 9, 16, 25, 36, 49, 64, 81]</span><br><span class="line">&lt;generator object &lt;genexpr&gt; at 0x000002A4CBF9EBA0&gt;</span><br></pre></td></tr></table></figure>
-
 <p>&emsp;&emsp;那么创建list和generator_ex，的区别是什么呢？从表面看就是[  ]和（）,但是结果却不一样，一个打印出来是列表（因为是列表生成式），而第二个打印出来却是<code>&lt;generator object &lt;genexpr&gt; at 0x000002A4CBF9EBA0&gt;</code>，要一个个打印出来，可以通过next（）函数获得generator的下一个返回值。</p>
 <p>用generator实现斐波那契数列</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">def fib(max):</span><br><span class="line">    n,a,b =0,0,1</span><br><span class="line">    while n &lt; max:</span><br><span class="line">        yield b</span><br><span class="line">        a,b =b,a+b</span><br><span class="line">        n = n+1</span><br><span class="line">    return &#x27;done&#x27;</span><br><span class="line"> </span><br><span class="line">a = fib(10)</span><br><span class="line">print(fib(10))</span><br><span class="line"># out:&lt;generator object fib at 0x0000023A21A34FC0&gt;</span><br><span class="line"></span><br><span class="line">print(a.__next__())</span><br><span class="line"># out:1</span><br><span class="line">print(a.__next__())</span><br><span class="line"># out:1</span><br><span class="line">print(a.__next__())</span><br><span class="line"># out:2</span><br><span class="line"></span><br><span class="line">for i in fib(6):</span><br><span class="line">    print(i)</span><br><span class="line"># out:1;1;2;3;5;8</span><br></pre></td></tr></table></figure>
-
 <h3 id="2-迭代器"><a href="#2-迭代器" class="headerlink" title="2 迭代器"></a>2 迭代器</h3><ul>
 <li><strong>可迭代对象</strong>（Iterable）<br>集合数据类型，如list,tuple,dict,set,str等</li>
-<li><strong>迭代器</strong>（Iterator）<br>Python中一个实现了_iter_方法和_next_方法的类对象，就是迭代器。</li>
+<li><strong>迭代器</strong>（Iterator）<br>Python中一个实现了<em>iter</em>方法和<em>next</em>方法的类对象，就是迭代器。</li>
 </ul>
 <p>&emsp;&emsp;生成器都是Iterator对象，但list、dict、str虽然是Iterable（可迭代对象），却不是Iterator（迭代器）。把list、dict、str等Iterable变成Iterator可以使用iter()函数判断</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; from collections import Iterable</span><br><span class="line">&gt;&gt;&gt; isinstance([], Iterable)</span><br><span class="line">True</span><br><span class="line">&gt;&gt;&gt; isinstance(&#123;&#125;, Iterable)</span><br><span class="line">True</span><br><span class="line">&gt;&gt;&gt; isinstance(&#x27;abc&#x27;, Iterable)</span><br><span class="line">True</span><br><span class="line">&gt;&gt;&gt; isinstance((x for x in range(10)), Iterable)</span><br><span class="line">True</span><br><span class="line">&gt;&gt;&gt; isinstance(100, Iterable)</span><br><span class="line">False</span><br></pre></td></tr></table></figure>
-
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; from collections import Iterator</span><br><span class="line">&gt;&gt;&gt; isinstance((x for x in range(10)), Iterator)</span><br><span class="line">True</span><br><span class="line">&gt;&gt;&gt; isinstance([], Iterator)</span><br><span class="line">False</span><br><span class="line">&gt;&gt;&gt; isinstance(&#123;&#125;, Iterator)</span><br><span class="line">False</span><br><span class="line">&gt;&gt;&gt; isinstance(&#x27;abc&#x27;, Iterator)</span><br><span class="line">False</span><br></pre></td></tr></table></figure>
-
 
     </div>
 

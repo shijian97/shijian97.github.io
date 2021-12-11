@@ -222,46 +222,54 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>python以及pytorch中许多都会涉及到数组或者列表，需加以区分。</p>
-<span id="more"></span>
+        <p>python以及pytorch中许多都会涉及到数组或者列表，需加以区分。<br><span id="more"></span></p>
 <h3 id="总述"><a href="#总述" class="headerlink" title="总述"></a>总述</h3><p>常用数据结构包括<strong>元组</strong> <strong>列表</strong> <strong>字典</strong> <strong>集合</strong>等，这些属于内建函数，而numpy的数组<strong>ndarray</strong>也是在机器学习中常用的，下面会记录较为重要的<strong>元组</strong> <strong>列表</strong> <strong>数组</strong></p>
 <h3 id="元组"><a href="#元组" class="headerlink" title="元组"></a>元组</h3><p>元组是一种固定长度，不可变的对象序列。</p>
 <ul>
 <li><p><code>tuple()</code>将任意序列或者迭代器转换为元组</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">In []: tuple([4, 0, 2])</span><br><span class="line">Out[]: (4, 0, 2)</span><br></pre></td></tr></table></figure></li>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">In []: tuple([4, 0, 2])</span><br><span class="line">Out[]: (4, 0, 2)</span><br></pre></td></tr></table></figure>
+</li>
 <li><p>用<code>+</code>号或者<code>*</code>号来链接元组</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">In []: (4, None, &#x27;foo&#x27;) + (6, 0)</span><br><span class="line">Out[]: (4, None, &#x27;foo&#x27;, 6, 2)</span><br><span class="line"></span><br><span class="line">In []: (4, 0, 2) * 2</span><br><span class="line">Out[]: (4, 0, 2, 4, 0, 2)</span><br></pre></td></tr></table></figure></li>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">In []: (4, None, &#x27;foo&#x27;) + (6, 0)</span><br><span class="line">Out[]: (4, None, &#x27;foo&#x27;, 6, 2)</span><br><span class="line"></span><br><span class="line">In []: (4, 0, 2) * 2</span><br><span class="line">Out[]: (4, 0, 2, 4, 0, 2)</span><br></pre></td></tr></table></figure>
+</li>
 <li><p>由于元组的内容与长度无法改变，因此实例方法较少。常见的有<code>count</code>方法，作用是计算某个数值在元组中出现的次数</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">In []: a = (4, 2, 0, 2, 2)</span><br><span class="line">In []: a.count(2)</span><br><span class="line">Out[]: 3</span><br></pre></td></tr></table></figure></li>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">In []: a = (4, 2, 0, 2, 2)</span><br><span class="line">In []: a.count(2)</span><br><span class="line">Out[]: 3</span><br></pre></td></tr></table></figure>
+</li>
 <li><p>使用[i]索引获取元组指定位置i的对象</p>
 </li>
 </ul>
 <h3 id="列表"><a href="#列表" class="headerlink" title="列表"></a>列表</h3><p>与元组不同，列表长度可变，内容可修改。</p>
 <ul>
 <li><p>使用中括号[]或者list类型来定义列表</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">In []:a_list = [2, 3, None]</span><br><span class="line">In []:tup = 2, 3, None</span><br><span class="line">In []:b_list = list(tup)</span><br></pre></td></tr></table></figure></li>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">In []:a_list = [2, 3, None]</span><br><span class="line">In []:tup = 2, 3, None</span><br><span class="line">In []:b_list = list(tup)</span><br></pre></td></tr></table></figure>
+</li>
 <li><p>函数用法和tuple相似</p>
 </li>
 <li><p>可以将迭代器或者生成器变为列表</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">In []: gen = range(10)</span><br><span class="line">In []: list(gen)</span><br><span class="line">Out[]: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]</span><br></pre></td></tr></table></figure></li>
-<li><p>元素的增添或移除<br>  – <code>.append()</code>将元素添加到列表尾部<br>  – <code>.insert(loc, obj)</code>在loc位置添加obj<br>  – <code>.remove()</code>移除第一个符合要求的值<br>  – <code>.pop()</code>将特定元素移除并返回</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">In []: a = [1, 2, 3, 4]</span><br><span class="line">In []: a.append(5)</span><br><span class="line">Out[]: [1, 2, 3, 4, 5]</span><br><span class="line">In []: a.insert(1, 999)</span><br><span class="line">Out[]: [1, 999, 2, 3, 4, 5]</span><br></pre></td></tr></table></figure></li>
-<li><p>列表的链接和移除<br>  – 与元组类似，两个列表之间使用+号连接<br>  – 若有已经定义的数据集，可以用extend向该列表添加元素</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">In []: a = [1, 2, 3, 4]</span><br><span class="line">In []: a.extend([&#x27;foo&#x27;, None, (1,2)])</span><br><span class="line">In []: a</span><br><span class="line">Out[]: [1, 2, 3, 4, &#x27;foo&#x27;, None, (1,2)]</span><br></pre></td></tr></table></figure></li>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">In []: gen = range(10)</span><br><span class="line">In []: list(gen)</span><br><span class="line">Out[]: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>元素的增添或移除<br>  — <code>.append()</code>将元素添加到列表尾部<br>  — <code>.insert(loc, obj)</code>在loc位置添加obj<br>  — <code>.remove()</code>移除第一个符合要求的值<br>  — <code>.pop()</code>将特定元素移除并返回</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">In []: a = [1, 2, 3, 4]</span><br><span class="line">In []: a.append(5)</span><br><span class="line">Out[]: [1, 2, 3, 4, 5]</span><br><span class="line">In []: a.insert(1, 999)</span><br><span class="line">Out[]: [1, 999, 2, 3, 4, 5]</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>列表的链接和移除<br>  — 与元组类似，两个列表之间使用+号连接<br>  — 若有已经定义的数据集，可以用extend向该列表添加元素</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">In []: a = [1, 2, 3, 4]</span><br><span class="line">In []: a.extend([&#x27;foo&#x27;, None, (1,2)])</span><br><span class="line">In []: a</span><br><span class="line">Out[]: [1, 2, 3, 4, &#x27;foo&#x27;, None, (1,2)]</span><br></pre></td></tr></table></figure>
+</li>
 <li><p>排序 sort</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">In []: a = [2, 3, 1, 4]</span><br><span class="line">In []: a.sort()</span><br><span class="line">In []: a</span><br><span class="line">Out[]: [1, 2, 3, 4]</span><br></pre></td></tr></table></figure>
 <p>sort函数会有二级排序key</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">In []: a = [&#x27;a&#x27;, &#x27;asd&#x27;, &#x27;asdf&#x27;, &#x27;as&#x27;]</span><br><span class="line">In []: a.sort(key=len)</span><br><span class="line">In []: a</span><br><span class="line">Out[]: [&#x27;a&#x27;, &#x27;as&#x27;, &#x27;asd&#x27;, &#x27;asdf&#x27;]</span><br></pre></td></tr></table></figure></li>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">In []: a = [&#x27;a&#x27;, &#x27;asd&#x27;, &#x27;asdf&#x27;, &#x27;as&#x27;]</span><br><span class="line">In []: a.sort(key=len)</span><br><span class="line">In []: a</span><br><span class="line">Out[]: [&#x27;a&#x27;, &#x27;as&#x27;, &#x27;asd&#x27;, &#x27;asdf&#x27;]</span><br></pre></td></tr></table></figure>
+</li>
 <li><p>切片start包含，stop不包含</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">In []: a = [2, 3, 1, 4]</span><br><span class="line">In []: a[-1:0]</span><br><span class="line">Out[]: [4]</span><br><span class="line">In []: a[::2] #步长</span><br><span class="line">Out[]: [2,1]</span><br><span class="line">In []: a[::-1] #相当于翻转</span><br><span class="line">Out[]: [4, 1, 2, 3]</span><br></pre></td></tr></table></figure></li>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">In []: a = [2, 3, 1, 4]</span><br><span class="line">In []: a[-1:0]</span><br><span class="line">Out[]: [4]</span><br><span class="line">In []: a[::2] #步长</span><br><span class="line">Out[]: [2,1]</span><br><span class="line">In []: a[::-1] #相当于翻转</span><br><span class="line">Out[]: [4, 1, 2, 3]</span><br></pre></td></tr></table></figure>
+</li>
 </ul>
 <h3 id="ndarray"><a href="#ndarray" class="headerlink" title="ndarray"></a>ndarray</h3><p>import numpy as np<br>numpy方法比python内建方法快速、占用内存小，用C语言写成。<br>较为重要的通用属性：shape属性表征<em>每一维度的数量</em>，ndim属性描述<em>数组的维数</em>，dtype属性描述<em>数组的数据类型</em>。</p>
 <ul>
-<li>生成ndarray<br>  – 使用array函数<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">In []: data_a = [1, 2, 3, 4]</span><br><span class="line">In []: ary_a = np.array(data_a)</span><br><span class="line">In []: a</span><br><span class="line">Out[]: array([[1, 2, 3, 4]])</span><br></pre></td></tr></table></figure>
-  – 使用<code>np.zeros(num)</code>可以生成num数量够的全0数组，<code>np.ones(num)</code>同理。<br>  – <code>np.arange()</code>为内建函数的range数组版<br>  默认类型为float64.</li>
+<li>生成ndarray<br>  — 使用array函数<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">In []: data_a = [1, 2, 3, 4]</span><br><span class="line">In []: ary_a = np.array(data_a)</span><br><span class="line">In []: a</span><br><span class="line">Out[]: array([[1, 2, 3, 4]])</span><br></pre></td></tr></table></figure>
+  — 使用<code>np.zeros(num)</code>可以生成num数量够的全0数组，<code>np.ones(num)</code>同理。<br>  — <code>np.arange()</code>为内建函数的range数组版<br>  默认类型为float64.</li>
 <li>ndarray的数据类型<br>使用astype方法显式转换数组<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">In []: arr = np.array([1, 2, 3, 4])</span><br><span class="line">In []: arr.dtype</span><br><span class="line">Out[]: dtype(&#x27;int64&#x27;)</span><br><span class="line">In []: float_arr = arr.astype(np.float64)</span><br><span class="line">In []: float_arr.dtype</span><br><span class="line">Out[]: dtype(&#x27;float64&#x27;)</span><br></pre></td></tr></table></figure></li>
 <li>基础切片与索引与列表同</li>
-<li>数组转置和换轴<br>  – <strong>transpose</strong>方法<br>  – <strong>T</strong>属性（转置）</li>
+<li>数组转置和换轴<br>  — <strong>transpose</strong>方法<br>  — <strong>T</strong>属性（转置）</li>
 <li>一元与二元通用函数：对数组每个元素进行计算</li>
 </ul>
 
