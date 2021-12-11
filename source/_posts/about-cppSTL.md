@@ -31,7 +31,7 @@ C++中STL常见容器的一些常用方法。
 | vec.back() | 返回最后一个元素的引用 | struc |
 | vec[0] | 返回首位置的值 | struc |
 
-#### deque
+#### deque（双端队列）
 头文件 `include<deque>`
 初始化 `deque<struc> deq;`
 
@@ -76,8 +76,11 @@ insert(...)：插入一个或多个元素。该函数参数较复杂，此处省
 栈 stack、队列 queue、优先级队列 priority_queue。
 
 #### queue
+特点：先进先出
+
 头文件 `include<queue>`
 初始化 `queue<struc> que`
+
 | 函数名  | 作用   | 返回值   |
 | :-----| :-----| :--------|
-| que.size() | 返回que的长度 | int |
+| que.size() | 返回que长度 | int |
